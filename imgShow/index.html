@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电影</title>
+    <style type="text/css">
+        *{padding: 0;margin: 0;}
+        body{
+            background-color: #fff;
+            color:#555;
+            font-family:"Avenir Next","Lantinghei SC";
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-font-smoothing: antialiased;/*使字体平滑更清晰*/
+        }
+        .wrap{
+            width:100%;
+            height: 600px;
+            position: absolute;
+            top: 50%;
+            margin-top: -300px;/*设置垂直居中*/
+            background-color: #333;
+            overflow: hidden;
+            -webkeit-perspective:800px;
+            -moz-perspective:800px;/*3D 元素距视图的距离，以像素计。其子元素会获得透视效果。*/
+        }
+        /*海报样式*/
+        .photo{
+            width: 260px;
+            height: 320px;
+            position: absolute;
+            z-index: 1;
+            box-shadow: 0 0 1px rgba(0,0,0,.01);
+            -webkit-transition: all .6s;
+            -moz-transition: all .6s;
+        }
+        .photo .side{
+            width: 100%;
+            height: 100%;
+            background-color: #eee;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .photo .side-front .image{
+            width: 100%;
+            height: 250px;
+            line-height: 250px;
+            overflow: hidden;
+        }
+        .photo .side-front .image img{
+            width: 100%;
+        }
+        .photo .side-front .caption{
+            text-align: center;
+            font-size: 16px;
+            line-height: 50px;
+        }
+        .photo .side-back{}
+        .photo .side-back .desc{
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5em;
+        }
+        /*当前选中的海报样式*/
+        .photo_center{
+            left:50%;
+            top:50%;
+            margin: -160px 0 0 -130px;/*设置水平垂直居中，position: absolute在photo样式内已经设置过了*/
+            z-index: 999;
+        }
+        /*负责翻转*/
+        .photo-wrap{
+            position: absolute;
+            width:100%;
+            height:100%;
+            -webkit-transform-style: preserve-3d;
+            -webkit-transition: -webkit-transform .6s ease-in-out;
+            -moz-transform-style: preserve-3d;/*使被转换的子元素保留其 3D 转换*/
+            -moz-transition: -moz-transform .6s ease-in-out;
+        }
+        .photo-wrap .side-front{
+            -webkit-transform:rotateY(0deg);
+            -moz-transform:rotateY(0deg);
+        }
+        .photo-wrap .side-back{
+            -webkit-transform:rotateY(180deg);
+            -moz-transform:rotateY(180deg);
+        }
+        .photo-wrap .side{
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;/*当元素背向屏幕时隐藏*/
+        }
+        /*控制按钮的样式*/
+        @font-face {
+            font-family: 'icons';
+            src:url('font/icons.woff') format('woff');
+            font-weight: normal;
+        }
+        .nav{
+            width: 80%;
+            height: 30px;
+            line-height: 30px;
+            position: absolute;
+            left:10%;
+            bottom: 20px;
+            z-index: 999;
+            text-align: center;
+        }
+        /*普通样式i*/
+        .nav .i{
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            cursor: pointer;/*鼠标移上去是手的样式*/
+            background-color: #aaa;
+            text-align: center;
+            border-radius: 50%;
+            -webkit-transform: scale(.48);
+            -moz-transform: scale(.48);
+            -webkit-transition: all .5s;
+            -moz-transition: all .5s;
+        }
+        .nav .i:after{
+            content: '\e600';
+            font-family: 'icons';
+            font-size: 80%;
+            display: inline-block;
+            line-height: 30px;
+            text-align: center;
+            color: #fff;
+            opacity: 0;
+        }
+        /*当前选中的样式i_current*/
+        .nav .i_current{
+            -webkit-transform: scale(1);
+            -moz-transform: scale(1);
+        }
+        .nav .i_current:after{
+            opacity: 1;
+        }
+        /*背面样式i_back*/
+        .nav .i_back{
+            -webkit-transform: rotateY(-180deg);
+            -moz-transform: rotateY(-180deg);
+            background-color:#555 ;
+        }
+        /*优化样式*/
+        .photo-wrap{
+            -webkit-transform-origin: 0% 50%;
+            -moz-transform-origin: 0% 50%;
+        }
+        .photo-front .photo-wrap{
+            -webkit-transform:translate(0px,0px) rotateY(0deg);
+            -moz-transform:translate(0px,0px) rotateY(0deg);
+        }
+        .photo-back .photo-wrap{
+            -webkit-transform:translate(260px,0px) rotateY(180deg);
+            -moz-transform:translate(260px,0px) rotateY(180deg);
+        }
+    </style>
+</head>
+<body onselectstart="return false"><!--防止页面文字被选中-->
+    <!--2.改写视图为模板字符串-->
+    <div class="wrap" id="wrap">
+        <!--photo负责平移和旋转-->
+        <div class="photo photo-front" onclick="turn(this)" id="photo_{{index}}">
+            <!--photo-wrap负责3D翻转-->
+            <div class="photo-wrap">
+                <div class="side side-front">
+                    <p class="image"><img src="image/{{img}}"></p>
+                    <p class="caption">{{caption}}</p>
+                </div>
+                <div class="side side-back">
+                    <div class="desc">{{desc}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
