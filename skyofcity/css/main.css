@@ -1,0 +1,412 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0;
+	padding:0;
+	border:none;
+	font-size:1.5625vw; /*移动端开发一般设备宽640,屏幕宽100vw,如果字体10px换算成vw 10/640*100=1.5625vw,这样字体可以根据屏幕宽度自适配*/
+	font-family:"微软雅黑";
+}
+html, body {height:100%;
+    overflow:hidden;
+	 }/*height:100%;默认高度是由内部元素撑开的，而背景绝对定位脱离了文档流;overflow:hidden;避免page2淡出的时候出界*/
+/*music部分*/
+.music {
+	position:fixed;
+	top:3vh;
+	right:4vw;
+	z-index:5;
+	width:15vw;
+	height:15vw;/*宽高一样，所以高度也用宽度的单位vw*/
+	border:4px solid #80BFFF;
+	border-radius:50%;/*使得边框从方形变成圆形*/
+	background-color:#fff;
+}
+.music > img:first-of-type {
+	position:absolute;
+	top:24%;
+	right:2.5%;
+	width:28.421%;
+	z-index:1;
+}/*用直接后代选择器更精确*/
+.music > img:last-of-type {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:0;
+	margin:auto;
+	width:79%;
+}
+.music > img.play{
+	-webkit-animation:music_disc 4s linear infinite;
+	        animation:music_disc 4s linear infinite;
+	}
+@-webkit-keyframes music_disc{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+   100%{-webkit-transform:rotate(360deg);
+				transform:rotate(360deg); }
+	}
+@keyframes music_disc{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(360deg);
+				 transform:rotate(360deg); }
+	}	
+/*page 背景*/
+.page {
+	position:absolute;
+	width:100%;/*absolute之后需要给宽度，三屏重合*/
+	height:100%;
+}
+.page > .bg {
+	position:absolute;
+	z-index:-1;
+	height:100%;
+	width:100%;
+}
+/*page1*/
+#page1 {display:block; }
+#page1 >.bg {
+	background:url(../image/p1_bg.jpg) no-repeat center;
+	background-size:100%;
+}
+#page1 >.p1_lantern {
+	position:absolute;
+	top:-3.4%;
+	right:0;
+	left:0;
+	margin:auto;
+	background:url(../image/p1_lantern.png) no-repeat center bottom;
+	background-size:100%;
+	width:45vw;
+	height:71.2vh;
+	font-size:3.506rem;
+	padding-top:31vh;/*针对内部文字的*/
+	color:#fff;
+	-webkit-box-sizing:border-box;/*表示内边距padding在已设定的宽度和高度内进行绘制，这样padding对背景图片不起作用，对文字起作用*/
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	text-align:center;
+}
+#page1 >.p1_lantern:before {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:-1;
+	content:"";/*伪类需要*/
+	margin:auto;
+	width:30vw;
+	height:30vw;
+	background:#4DA6FF;
+	opacity:0.5;/*透明度*/
+	-webkit-box-shadow:0 0 10vw 10vw #4DA6FF;
+	-moz-box-shadow:0 0 10vw 10vw #4DA6FF;
+	-ms-box-shadow:0 0 10vw 10vw #4DA6FF;
+	-o-box-shadow:0 0 10vw 10vw #4DA6FF;
+	box-shadow:0 0 10vw 10vw #4DA6FF;
+	border-radius:50%;
+	/*闪烁*/
+	-webkit-animation:p1_lantern 0.5s infinite alternate;
+	animation:p1_lantern 0.5s infinite alternate;
+}
+@-webkit-keyframes p1_lantern{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+@keyframes p1_lantern{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+
+#page1 >.p1_icon {
+	position:absolute;
+	right:0;
+	bottom:5vh;
+	left:0;
+	background:url(../image/mountain.png) no-repeat center center;
+	background-size:100%;
+	width:27.656vw;
+	height:18.63vh;
+	margin:auto;
+/*转动*/
+	-webkit-animation:mountain 3s linear infinite;
+	        animation:mountain 3s linear infinite;
+}
+@-webkit-keyframes mountain{
+	0%{transform:rotate(0deg); }
+	100%{transform:rotate(-360deg);}
+	}
+@keyframes mountain{
+	0%{transform:rotate(0deg); }
+	100%{transform:rotate(-360deg);}
+	}
+#page1 >.p1_words {
+	position:absolute;
+	right:0;
+	bottom:10px;
+	left:0;
+	text-align:center;
+	font-size:2.134rem;
+}
+/*page2*/
+#page2 {
+	display:none;
+	-webkit-transition:0.5s;
+	        transition:0.5s;
+ }
+/*page2淡出效果*/
+#page2.fadeOut{opacity:0.3;
+    -webkit-transform:translate(0,-100%);
+            transform:translate(0,-100%);
+}
+/*page2淡入效果，p2_bg_loading动画从完全透明到完全不透明，并停止在动画结束状态*/
+#page2 >.p2_bg_loading{
+	z-index:4;
+	background:#4DA6FF;
+	-webkit-animation:p2_bg_loading 1s linear forwards;
+	        animation:p2_bg_loading 1s linear forwards;
+	}
+@-webkit-keyframes p2_bg_loading{
+	0%{opacity:1;}
+	100%{opacity:0;}
+	}
+@keyframes p2_bg_loading{
+	0%{opacity:1;}
+	100%{opacity:0;}
+	}
+	
+#page2 >.bg {
+	background:url(../image/p2_bg.jpg) no-repeat center;
+	background-size:100%;
+}
+#page2 >.p2_circle {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	margin:auto;
+	background:url(../image/p2_circle_outer.png) no-repeat center center;
+	background-size:100%;
+	width:59.375vw;
+	height:59.375vw;
+	border-radius:50%;
+/*转动*/
+	-webkit-animation:p2_circle_outer 1s linear 1.5s infinite;
+	animation:p2_circle_outer 1s linear 1.5s infinite;
+}
+@-webkit-keyframes p2_circle_outer{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(-360deg);
+				 transform:rotate(-360deg); }
+	
+	}
+@keyframes p2_circle_outer{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(-360deg);
+				 transform:rotate(-360deg); }
+	
+	}
+#page2 >.p2_circle:before {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	margin:auto;
+	content:"";
+	background:url(../image/p2_circle_middle.png) no-repeat center center;
+	background-size:100%;
+	width:45.625vw;
+	height:45.625vw;
+	border-radius:50%;
+	/*转动*/
+	-webkit-animation:p2_circle_middle 1s linear 1s infinite;
+	animation:p2_circle_middle 1s linear 1s infinite;
+}
+@-webkit-keyframes p2_circle_middle{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(720deg);
+				 transform:rotate(720deg); }
+	
+	}
+@keyframes p2_circle_middle{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(720deg);
+				 transform:rotate(720deg); }
+	
+	}
+	
+#page2 >.p2_circle:after {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	margin:auto;
+	content:"";
+	background:url(../image/p2_circle_inner.png) no-repeat center center;
+	background-size:100%;
+	width:39.9375vw;
+	height:39.9375vw;
+	border-radius:50%;
+	/*转动*/
+	-webkit-animation:p2_circle_inner 1s linear 0.5s infinite;
+	animation:p2_circle_inner 1s linear 0.5s infinite;
+}
+@-webkit-keyframes p2_circle_inner{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(-1080deg);
+				 transform:rotate(-1080deg); }
+	
+	}
+@keyframes p2_circle_inner{
+	0%{-webkit-transform:rotate(0deg);
+	           transform:rotate(0deg); }
+    100%{-webkit-transform:rotate(-1080deg);
+				 transform:rotate(-1080deg); }
+	
+	}
+	
+#page2 >.p2_2017 {
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	margin:auto;
+	background:url(../image/sun.png) no-repeat center center;
+	background-size:100%;
+	width:17.5vw;
+	height:17.5vw;
+}
+/*page3*/
+#page3 {
+	display:none;
+	-webkit-transition:0.5s;
+	        transition:0.5s;
+}
+
+#page3.fadeIn{
+	-webkit-transform:translate(0,-100%);
+            transform:translate(0,-100%);
+	}
+#page3 >.bg {
+	background:url(../image/p3_bg.jpg) no-repeat center;
+	background-size:100%;
+}
+#page3 >.p3_producer {
+	width:28vw;
+	height:6.327vh;
+	position:absolute;
+	top:2vh;
+	right:0;
+	left:0;
+	margin:auto;
+	text-align:center;
+	font-size:5rem;
+}
+#page3 >.p3_title {
+	width:28vw;
+	height:50vh;
+	position:absolute;
+	top:9vh;
+	right:0;
+	left:0;
+	margin:auto;
+	text-align:center;
+	font-size:10rem;
+	font-weight:bold;
+	color:#004A95;
+	text-shadow:5px 5px 10px #95CAFF;
+}
+#page3 >.p3_second {
+	width:22vw;
+	height:41vh;
+	position:absolute;
+	top:3vh;
+	left:3.75vw;
+	background:url(../image/sky.png) no-repeat center center;
+	background-size:100%;
+	/*闪烁*/
+	-webkit-animation:sky 0.5s infinite alternate;
+	animation:sky 0.5s infinite alternate;
+}
+@-webkit-keyframes sky{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+@keyframes sky{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+#page3 >.p3_first {
+	width:22vw;
+	height:41vh;
+	position:absolute;
+	top:10vh;
+	right:3.75vw;
+	background:url(../image/star.png) no-repeat center center;
+	background-size:100%;
+/*闪烁*/
+	-webkit-animation:star 0.5s infinite alternate;
+	animation:star 0.5s infinite alternate;
+}
+@-webkit-keyframes star{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+@keyframes star{
+	0%{opacity:0.5;
+	   -webkit-transform:scale(0.8,0.8);
+			   transform:scale(0.8,0.8); }
+	100%{opacity:1;}
+}
+#page3 >.p3_turn {
+	width:32vw;
+	height:32vw;
+	position:absolute;
+	right:0;
+	left:0;
+	bottom:5vh;
+	margin:auto;
+	boeder-radius:50%;
+	background:url(../image/night.png) no-repeat center center;
+	background-size:100%;
+	/*转动*/
+	-webkit-animation:p3_turn 2s linear infinite;
+	        animation:p3_turn 2s linear infinite;
+}
+@-webkit-keyframes p3_turn{
+	0%{transform:rotate(0deg); }
+	100%{transform:rotate(360deg);}
+	}
+@keyframes p3_turn{
+	0%{transform:rotate(0deg); }
+	100%{transform:rotate(360deg);}
+	}
+
+
