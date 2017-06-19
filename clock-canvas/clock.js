@@ -75,11 +75,11 @@ function update(){
 function updateBalls(){
     for(var i=0; i<balls.length; i++){
         balls[i].x += balls[i].vx;
-        balls[i].y += balls[i].vy;
+        balls[i].y -= balls[i].vy;
         balls[i].vy += balls[i].g;
 
-        if(balls[i].y>=WINDOW_HEIGHT-RADIUS){
-            balls[i].y=WINDOW_HEIGHT-RADIUS;
+        if(balls[i].y<=RADIUS){
+            balls[i].y=RADIUS;
             balls[i].vy= -balls[i].vy*0.75;
         }
     }
